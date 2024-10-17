@@ -1,0 +1,21 @@
+---> DOCS PARA ESTUDOS
+https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Models
+https://docs.djangoproject.com/en/5.1/
+
+########## Tipos de Requisições APIs Rest ##########
+PUT -> Create
+GET -> Read
+POST -> Update
+DELETE -> Delete
+
+
+############
+Request -> HTTP Requisição que é enviada ao servidor
+Respose -> HTTP Resposta do servidor
+
+
+########## INICIAR PROJETO DJANGO ##########
+django-admin startproject estudos
+
+
+

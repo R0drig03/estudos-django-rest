@@ -1,3 +1,11 @@
-from django.test import TestCase
+import os
+import django
 
-# Create your tests here.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings') 
+
+django.setup()
+
+from models import Sabores  
+
+sabor = Sabores.objects.create(name_sabor='Calabresa')
+print('DADOS SALVOS NO BANCO')

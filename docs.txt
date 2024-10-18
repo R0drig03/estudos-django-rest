@@ -22,3 +22,7 @@ django-admin startproject estudos
 ######## FUNÇÃO PARA RETORNAR COMO STRING UM OBJETO ########
 def __str__(self):
     return dict(self.OPCOES_CHOICES)[self.name_sabor]
+
+
+######## ESTUDOS MODELS ######## 
+https://www.youtube.com/watch?v=UWPwyn6FXPw

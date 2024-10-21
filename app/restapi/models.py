@@ -17,7 +17,7 @@ class Sabores(models.Model):
     name_sabor = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> list:
+    def __str__(self) -> str:
         return '{}'.format([self.id, self.name_sabor, self.created_at])
 
 
@@ -28,7 +28,7 @@ class Cliente(models.Model):
     date_aniver = models.DateField() 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> list:
+    def __str__(self) -> str:
         return '{}'.format([self.id, self.name_cliente, self.cpf_cliente, self.date_aniver, f'{self.created_at}'])
 
     @classmethod

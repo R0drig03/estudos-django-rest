@@ -19,7 +19,10 @@ class ClienteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PedidoSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model = Pedido
+        fields = '__all__'
+
 
 class SaboresSerializer(serializers.ModelSerializer):
 

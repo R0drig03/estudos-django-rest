@@ -1,6 +1,7 @@
 ---> DOCS PARA ESTUDOS
 https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Models
 https://docs.djangoproject.com/en/5.1/
+https://www.django-rest-framework.org/api-guide/serializers/
 
 ########## Tipos de Requisições APIs Rest ##########
 PUT -> Create
@@ -18,7 +19,6 @@ Respose -> HTTP Resposta do servidor
 django-admin startproject estudos
 
 
-
 ######## FUNÇÃO PARA RETORNAR COMO STRING UM OBJETO ########
 def __str__(self):
     return dict(self.OPCOES_CHOICES)[self.name_sabor]
@@ -26,3 +26,159 @@ def __str__(self):
 
 ######## ESTUDOS MODELS ######## 
 https://www.youtube.com/watch?v=UWPwyn6FXPw
+
+
+######## COMO CONSUMIR UM MODEL DO DJANGO ########
+teste = NomeModel.objects.get(Colunabanco=filtro)
+
+-> Model.get_all_clientes (Para consumir todos os dados do bd)
+
+TIPOS REQUISIÇÕES
+-> GET (FILTRAR POR COLUNA DO BANCO)
+-> GETALL (CONSUMIR TUDO SEM FILTRO)
+-> FILTER (FILTRAR POR STRING)
+-> CREATE (ADCIONAR LINHA NO BANCO)
+-> teste.first() (VAI PUXAR A ULTIMA LINHA DA TABELA) -> TESTE É O OBJETO QUE RECEBEU A INSTÂNCIA DO MODEL
+-> teste.first().delete() -> EXCLUI A ULTIMA LINHA DO BANCO
+
+
+
+######################## CLASS META ########################
+############ db_table ############
+1. db_table (nome da tabela no banco de dados)
+Define o nome da tabela no banco de dados que o modelo usará. Se não for especificado, o Django criará automaticamente um nome baseado no nome do modelo.
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    class Meta:
+        db_table = 'my_custom_table_name'
+Sem essa definição, o Django criaria automaticamente algo como my_app_item.
+
+
+
+
+############ ordering ############ 
+2. ordering (ordenação padrão)
+Define a ordenação padrão dos objetos quando você os recupera do banco de dados. Você pode ordenar por um ou mais campos. Por exemplo, ordenar por created_at em ordem crescente:
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+Se você quiser ordenar de forma decrescente, adicione um - antes do nome do campo:
+
+ordering = ['-created_at']
+
+
+
+
+############ verbose_name e verbose_name_plural ############ 
+3. verbose_name e verbose_name_plural (nomes legíveis)
+Define os nomes legíveis do modelo, singular e plural, que serão exibidos no painel de administração e em outras áreas do Django.
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Item'
+        verbose_name_plural = 'Itens'
+
+
+
+
+############ unique_together ############ 
+4. unique_together (unicidade combinada de campos)
+Define que a combinação de dois ou mais campos deve ser única no banco de dados, ou seja, não pode haver dois registros com os mesmos valores nesses campos.
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ['name', 'category']
+Aqui, não pode haver dois Items com o mesmo nome e a mesma categoria.
+
+
+
+
+############ constraints ############ 
+5. constraints (restrições de banco de dados)
+Define restrições de banco de dados personalizadas usando CheckConstraint, UniqueConstraint, entre outros. É uma maneira mais moderna de lidar com algumas funcionalidades que antes eram feitas por unique_together.
+
+from django.db.models import Q, CheckConstraint
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    quantity = models.IntegerField()
+
+    class Meta:
+        constraints = [
+            CheckConstraint(check=Q(quantity__gte=0), name='quantity_non_negative')
+        ]
+Aqui, estamos garantindo que a quantidade nunca seja negativa.
+
+
+
+
+############ abstract ############ 
+6. abstract (classe abstrata)
+Se abstract = True, o modelo será uma classe abstrata, ou seja, ela não criará uma tabela no banco de dados e servirá apenas como uma classe base para outros modelos herdarem.
+
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+Outros modelos podem herdar de BaseModel para reutilizar os campos created_at e updated_at:
+
+class Item(BaseModel):
+    name = models.CharField(max_length=100)
+
+
+
+
+############ permissions ############
+7. permissions (permissões personalizadas)
+Define permissões personalizadas que podem ser usadas com o sistema de autenticação e autorização do Django.
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        permissions = [
+            ('can_view_item_details', 'Can view item details')
+        ]
+
+
+
+
+############ get_latest_by ############
+8. get_latest_by (ordem para latest() e earliest())
+Define qual campo o Django deve usar para recuperar o "último" ou o "primeiro" registro usando os métodos latest() e earliest().
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        get_latest_by = 'created_at'
+
+
+
+
+############ default_related_name ############
+9. default_related_name (nome padrão para relações reversas)
+Define o nome padrão usado para referenciar o relacionamento reverso em relações ForeignKey ou OneToOneField.
+
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        default_related_name = 'items'
+Assim, se outro modelo tiver uma ForeignKey para Item, a relação reversa poderá ser acessada por related_model.items.all().

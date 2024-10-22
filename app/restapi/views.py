@@ -5,42 +5,7 @@ from rest_framework import status
 from .models import TamPizzas, Sabores, Cliente, Pedido
 from .serializers import TamPizzasSerializer, ClienteSerializer, PedidoSerializer, SaboresSerializer
 
-#class TamPizzaView(APIView):
-#    
-#    def get(self, request):
-#        model = TamPizzas.objects.all()
-#        serializer = TamPizzasSerializer(model, many=True)
-#
-#        return Response(serializer.data)
-#
-#
-#class ClienteView(APIView):
-#    
-#    def get(self, request):
-#        model = Cliente.objects.all()
-#        serializer = ClienteSerializer(model, many=True)
-#        
-#        return Response(serializer.data)
-#    
-#
-#class SaboresView(APIView):
-#
-#    def get(self, request):
-#        model = Sabores
-#        serializer = SaboresSerializer(model, many=True)
-#
-#        return Response(serializer.data)
-#    
-#class PedidoView(APIView):
-#
-#    def get(self, request):
-#        model = Pedido
-#        serializer = PedidoSerializer(model, many=True)
-#
-#        return Response(serializer.data)
-
-
-class TamPizzaViewSet(viewsets.ModelViewSet):
+class TamPizzaView(APIView):
     
     def get(self, request):
         model = TamPizzas.objects.all()
@@ -49,7 +14,7 @@ class TamPizzaViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class ClienteViewSet(viewsets.ModelViewSet):
+class ClienteView(APIView):
     
     def get(self, request):
         model = Cliente.objects.all()
@@ -58,18 +23,40 @@ class ClienteViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     
 
-class SaboresViewSet(viewsets.ModelViewSet):
+class SaboresView(APIView):
 
-    def get():
+    def get(self, request):
         model = Sabores.objects.all()
         serializer = SaboresSerializer(model, many=True)
 
         return Response(serializer.data)
     
-class PedidoViewSet(viewsets.ModelViewSet):
+class PedidoView(APIView):
 
     def get(self, request):
         model = Pedido.objects.all()
         serializer = PedidoSerializer(model, many=True)
 
         return Response(serializer.data)
+    
+    
+    
+#class TamPizzaViewSet(viewsets.ModelViewSet):    
+#    queryset  = TamPizzas.objects.all()
+#    serializer = TamPizzasSerializer(queryset, many=True)
+#
+#
+#class ClienteViewSet(viewsets.ModelViewSet):
+#    queryset  = Cliente.objects.all()
+#    serializer = ClienteSerializer(queryset, many=True)
+#    
+#    
+#class SaboresViewSet(viewsets.ModelViewSet):
+#    queryset = Sabores.objects.all()
+#    serializer = SaboresSerializer(queryset, many=True)
+#
+#    
+#class PedidoViewSet(viewsets.ModelViewSet):
+#    queryset = Pedido.objects.all()
+#    serializer = PedidoSerializer(queryset, many=True)
+#

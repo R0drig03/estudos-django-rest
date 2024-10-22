@@ -17,6 +17,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 
         model = Cliente
         fields = '__all__'
+        
 
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:

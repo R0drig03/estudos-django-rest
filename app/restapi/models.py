@@ -41,27 +41,18 @@ class Cliente(models.Model):
 
 class Pedido(models.Model):
     id = models.BigAutoField(primary_key=True)
-    fgkey_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    fgkey_sabor = models.ForeignKey(Sabores, on_delete=models.CASCADE)
-    fgkey_tam = models.ForeignKey(TamPizzas, on_delete=models.CASCADE)
-    number_mesa = models.CharField(max_length=1)
-    created_at = models.DateTimeField(auto_now_add=True)
+    fgkey_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, verbose_name='Cliente')
+    fgkey_sabor = models.ForeignKey(Sabores, on_delete=models.CASCADE, verbose_name='Sabor')
+    fgkey_tam = models.ForeignKey(TamPizzas, on_delete=models.CASCADE, verbose_name='Tamanho')
+    number_mesa = models.CharField(max_length=1, verbose_name='Número da Mesa')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
 
+    class Meta:
+        verbose_name = 'Pedido'
+        verbose_name_plural = 'Pedidos'
 
     def __str__(self) -> str:
-        return '{}'.format(
-            [
-                self.id, 
-                self.fgkey_cliente,
-                self.fgkey_cliente.name_cliente,
-                self.fgkey_sabor,
-                self.fgkey_sabor.name_sabor,
-                self.fgkey_tam,
-                self.fgkey_tam.name_tamanho,
-                self.number_mesa,
-                self.created_at
-            ]
-        )
+        return f'DADOS SALVOS -> {self.id}. {self.fgkey_cliente.name_cliente}. {self.fgkey_sabor.name_sabor}. {self.fgkey_tam.name_tamanho}. {self.number_mesa}. {self.created_at}'
 
 #class tamanho_pizzas(models.Model):
 #    TAM_CHOICES = {

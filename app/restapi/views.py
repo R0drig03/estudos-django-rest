@@ -34,11 +34,17 @@ class SaboresView(APIView):
 class PedidoView(APIView):
 
     def get(self, request):
-        model = Pedido.objects.all()
+        model = Pedido.objects.all().select_related('cliente', 'tamanho').prefetch_related('sabores')
         serializer = PedidoSerializer(model, many=True)
+        
+        return Response(list(serializer.data))
 
-        return Response(serializer.data)
-    
+
+
+class TratarGetPedido():
+    def __init__(self, serializer_dados):
+        self.serializer_dados = serializer_dados
+
     
     
 #class TamPizzaViewSet(viewsets.ModelViewSet):    

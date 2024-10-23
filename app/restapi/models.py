@@ -8,7 +8,7 @@ class TamPizzas(models.Model):
     name_tamanho = models.CharField(max_length=2)
 
     def __str__(self):
-        return '{}'.format([self.id, self.name_tamanho])
+        return '{}'.format(self.name_tamanho)
 
     
 
@@ -18,7 +18,7 @@ class Sabores(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return '{}'.format([self.id, self.name_sabor, self.created_at])
+        return '{}'.format(self.name_sabor)
 
 
 class Cliente(models.Model):
@@ -29,7 +29,7 @@ class Cliente(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return '{}'.format([self.id, self.name_cliente, self.cpf_cliente, self.date_aniver, f'{self.created_at}'])
+        return '{}. {}'.format(self.id, self.name_cliente)
 
     @classmethod
     def clientes_niver(cls): # -> CLS = MODEL ATUAL     
@@ -44,7 +44,7 @@ class Pedido(models.Model):
     fgkey_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, verbose_name='Cliente')
     fgkey_sabor = models.ForeignKey(Sabores, on_delete=models.CASCADE, verbose_name='Sabor')
     fgkey_tam = models.ForeignKey(TamPizzas, on_delete=models.CASCADE, verbose_name='Tamanho')
-    number_mesa = models.CharField(max_length=1, verbose_name='Número da Mesa')
+    number_mesa = models.IntegerField(verbose_name='Número da Mesa', )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
 
     class Meta:

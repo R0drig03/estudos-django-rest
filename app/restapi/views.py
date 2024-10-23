@@ -34,10 +34,13 @@ class SaboresView(APIView):
 class PedidoView(APIView):
 
     def get(self, request):
-        model = Pedido.objects.all().select_related('cliente', 'tamanho').prefetch_related('sabores')
+        model = Pedido.objects.select_related('fgkey_cliente', 'fgkey_tam')\
+                                .prefetch_related('fgkey_sabor').all()
+
+
         serializer = PedidoSerializer(model, many=True)
         
-        return Response(list(serializer.data))
+        return Response(serializer.data)
 
 
 

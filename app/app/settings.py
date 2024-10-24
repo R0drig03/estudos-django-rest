@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 
 
-env_path = Path(r'C:\Users\05162565210\projetos-ajcred\estudos-django\banco\.env.credenciais')
+env_path = Path(r'C:\Users\proce\DEV\ESTUDO DJANGO\estudos-django-rest\banco\.env.credenciais')
 
 load_dotenv(dotenv_path=env_path)
 
@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': db_name,
         'USER': db_user,
         'PASSWORD': db_password,
-        'HOST': db_host,
+        'HOST': "localhost",
         'PORT': '8888'
     }
 }

@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import TamPizzas, Sabores, Cliente, Pedido
@@ -42,30 +43,36 @@ class PedidoView(APIView):
         
         return Response(serializer.data)
 
+    def post(self, request):        
+        data = request.data
 
+        try:
+            cliente = Cliente.objects.get(id=data.get('fgkey_cliente'))
+            tamanho = TamPizzas.objects.get(id=data.get('fgkey_tam'))
+            sabores = Sabores.objects.filter(id__in=data.get('fgkey_sabor', []))
+            
+            print('DADOS DE ENTRADA -> {} -> {} -> {}'.format(cliente, tamanho, sabores))
+        
+        except Cliente.DoesNotExist:
+            return Response({"error": "Cliente não encontrado."}, status=404)
+        except TamPizzas.DoesNotExist:
+            return Response({"error": "Tamanho não encontrado."}, status=404)
+        except Sabores.DoesNotExist:
+            return Response({"error": "Um ou mais sabores não foram encontrados."}, status=404)
 
-class TratarGetPedido():
-    def __init__(self, serializer_dados):
-        self.serializer_dados = serializer_dados
+        pedido = Pedido(
+            fgkey_cliente=cliente,
+            fgkey_tam=tamanho
+        )
+        pedido.save()
 
-    
-    
-#class TamPizzaViewSet(viewsets.ModelViewSet):    
-#    queryset  = TamPizzas.objects.all()
-#    serializer = TamPizzasSerializer(queryset, many=True)
-#
-#
-#class ClienteViewSet(viewsets.ModelViewSet):
-#    queryset  = Cliente.objects.all()
-#    serializer = ClienteSerializer(queryset, many=True)
-#    
-#    
-#class SaboresViewSet(viewsets.ModelViewSet):
-#    queryset = Sabores.objects.all()
-#    serializer = SaboresSerializer(queryset, many=True)
-#
-#    
-#class PedidoViewSet(viewsets.ModelViewSet):
-#    queryset = Pedido.objects.all()
-#    serializer = PedidoSerializer(queryset, many=True)
-#
+        pedido.fgkey_sabor.set(sabores)
+
+        serializer = PedidoSerializer(pedido)
+        
+        return Response(serializer.data, status=201)
+        
+@api_view()
+def BasicView(request):
+    return Response('Testando uma maneira de declarar uma view de maneira mais simples.')
+

@@ -6,13 +6,14 @@ from rest_framework.routers import DefaultRouter
 
 #MANEIRA DE DEFINIR AS URLS CASO NAS VIEWS EU ESTEJA USANDO O "APIView" para declarar cada endpoint
 
-from .views import TamPizzaView, ClienteView, PedidoView, SaboresView
+from .views import TamPizzaView, ClienteView, PedidoView, SaboresView, BasicView
 urlpatterns = [
     path('tamanho/', TamPizzaView.as_view(), name='Tamanho Pizzas'),
     path('cliente/', ClienteView.as_view(), name='cliente'),
     path('sabores/', SaboresView.as_view(), name='sabores'),
     path('pedidos/', PedidoView.as_view(), name='pedidos'),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('basic/', BasicView, name='basic')
 ]
 
 

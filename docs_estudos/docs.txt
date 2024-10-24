@@ -182,3 +182,30 @@ class Item(models.Model):
     class Meta:
         default_related_name = 'items'
 Assim, se outro modelo tiver uma ForeignKey para Item, a relação reversa poderá ser acessada por related_model.items.all().
+
+
+
+
+
+################ COMO CRIAR UM PERFIL ADMIN NO DJANGO ################
+python manage.py createsuperuser
+
+user admin django
+Rodrigo
+rodrigo@gmai.com
+123
+
+
+
+################# COMO USAR O API VIEW ################
+
+Maneira mais simples de declarar uma view
+@api_view()
+def BasicView(request):
+    return Response('Testando uma maneira de declarar uma view de maneira mais simples.')
+
+
+
+
+
+
